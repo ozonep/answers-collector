@@ -41,6 +41,12 @@ router.get('/', (req, res) => {
     }
 });
 
+router.get('/:answerId', (req, res) => {
+    db.any('SELECT id, normalized_answer, answer, hash, user_id, date FROM answers LEFT JOIN student_answers ON answers.id = student_answers.answer_id WHERE id = $1', [req.params.answerId])
+        .then(data => res.send(data))
+        .catch(err => res.send(err.message));
+});
+
 router.post('/', (req, res) => {
     const uniqueId = cuid();
     const { error } = validateAnswer(req.body);
