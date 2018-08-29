@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
             .then(data => res.send(data))
             .catch(err => res.send(err.message));
     } else {
-        db.any('SELECT id, normalized_answer, hash, user_id, date FROM answers LEFT JOIN student_answers ON answers.id = student_answers.answer_id')
+        db.any('SELECT id, answer, normalized_answer, hash, user_id, date FROM answers LEFT JOIN student_answers ON answers.id = student_answers.answer_id')
             .then(data => res.send(data))
             .catch(err => res.send(err.message));
     }
