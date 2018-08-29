@@ -30,9 +30,15 @@ const validateAnswer = (answer) => {
 
 
 router.get('/', (req, res) => {
-    db.any('SELECT id, normalized_answer, answer, hash, user_id, date FROM answers left join student_answers on answers.id = student_answers.answer_id where exercise_id = $1', [req.query.exerciseId])
-        .then(data => res.send(data))
-        .catch(err => res.send(err.message));
+    if (req.query.exerciseId) {
+        db.any('SELECT id, normalized_answer, answer, hash, user_id, date FROM answers LEFT JOIN student_answers ON answers.id = student_answers.answer_id WHERE exercise_id = $1', [req.query.exerciseId])
+            .then(data => res.send(data))
+            .catch(err => res.send(err.message));
+    } else {
+        db.any('SELECT id, normalized_answer, hash, user_id, date FROM answers LEFT JOIN student_answers ON answers.id = student_answers.answer_id')
+            .then(data => res.send(data))
+            .catch(err => res.send(err.message));
+    }
 });
 
 router.post('/', (req, res) => {
